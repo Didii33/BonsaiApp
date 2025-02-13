@@ -12,18 +12,23 @@ function isValidEmail(email) {
       alert('Bitte eine gültige E-Mail-Adresse eingeben!');
       return;
     }
+    }
   
     // Firebase Anmeldung durchführen
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(userCredential => {
-        const user = userCredential.user;
-        console.log('Signed in as:', user.email);
-      })
-      .catch(error => {
-        console.error('Error signing in:', error);
-        alert('Fehler beim Anmelden: ' + error.message);
-      });
-  }
+     .then((userCredential) => {
+     // Erfolgreiches Login
+     console.log('Erfolgreich eingeloggt:', userCredential.user);
+    
+     // Weiterleitung zur Bonsai-Seite
+     window.location.href = '/docs/bonsai-form.html'; // Ändere dies zum Pfad deiner Seite
+     })
+    .catch((error) => {
+     // Fehlerbehandlung
+     const errorCode = error.code;
+     const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+     });
   
   // Beispiel für die Registrierung
   function registerWithEmail(email, password) {
