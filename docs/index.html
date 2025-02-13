@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bonsai Pflege</title>
-    <link rel="stylesheet" href="style.css">
-    <script defer src="app.js"></script>
-    <link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bonsai Pflege</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="app.js"></script>
+  <link rel="manifest" href="manifest.json">
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 </head>
 <body>
-    <h1>Bonsai Pflege</h1>
-    <button onclick="login()">Login</button>
-    <button onclick="logout()">Logout</button>
-    <div id="bonsai-list"></div>
+  <h1>Bonsai Pflege</h1>
+  <button id="login-button">Login</button>
+  <button id="logout-button">Logout</button>
+  <input type="text" id="bonsai-input" placeholder="Neuer Bonsai">
+  <button id="add-bonsai-button">Hinzufügen</button>
+  <ul id="bonsai-list"></ul>
 </body>
 </html>
