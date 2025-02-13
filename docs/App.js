@@ -1,7 +1,5 @@
-import firebaseConfig from './firebaseConfig.js';
-
 // Firebase initialisieren
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(window.firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
