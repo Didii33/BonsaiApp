@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bonsai Pflege</title>
   <link rel="stylesheet" href="style.css">
-  <script defer src="firebaseConfig.js"></script>
-  <script defer src="app.js"></script>
+  <script defer src="firebaseConfig.js"></script>  <!-- Firebase-Konfiguration extern laden -->
+  <script defer src="app.js"></script>  <!-- Deine Haupt-App -->
   <link rel="manifest" href="manifest.json">
   <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
   <!-- Content Security Policy -->
   <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' https://www.gstatic.com https://www.googleapis.com; object-src 'self'">
 </head>
@@ -29,6 +29,7 @@
     <button id="add-bonsai-button">Hinzufügen</button>
     <ul id="bonsai-list"></ul>
   </div>
+
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

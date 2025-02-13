@@ -1,5 +1,4 @@
-// Firebase initialisieren
-firebase.initializeApp(window.firebaseConfig);
+// Firebase-Dienste verwenden
 const auth = firebase.auth();
 const db = firebase.firestore();
 
