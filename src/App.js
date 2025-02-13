@@ -2,7 +2,7 @@ import Auth from "./Auth";
 function App() {
   return <Auth />;
 }
-export default App;
+
 
 
 import BonsaiList from "./BonsaiList";
@@ -13,4 +13,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
