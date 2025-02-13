@@ -1,6 +1,6 @@
 self.addEventListener('install', (event) => {
     event.waitUntil(
-      caches.open('bonsai-cache').then((cache) => {
+      caches.open('bonsai-cache-v2').then((cache) => {  // Verwende eine neue Cache-Version
         return cache.addAll([
           '/',
           '/index.html',
@@ -14,16 +14,21 @@ self.addEventListener('install', (event) => {
     );
   });
   
-  self.addEventListener('fetch', (event) => {
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-        return fetch(event.request);
+  self.addEventListener('activate', (event) => {
+    const cacheWhitelist = ['bonsai-cache-v2'];  // Definiere hier die neuen Cache-Namen
+    event.waitUntil(
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (!cacheWhitelist.includes(cacheName)) {
+              return caches.delete(cacheName);
+            }
+          })
+        );
       })
     );
   });
+  
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
