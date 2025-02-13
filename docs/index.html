@@ -20,12 +20,13 @@
 </head>
 <body>
   <h1>Bonsai Pflege</h1>
-  <div id="login-container">
-    <input type="email" id="email" placeholder="E-Mail" autocomplete="email">
-    <input type="password" id="password" placeholder="Passwort" autocomplete="current-password">
-    <button id="login-button">Login</button>
-    <button id="register-button">Registrieren</button>
-  </div>
+  <!-- Formular für die Anmeldung -->
+<form id="signInForm">
+    <input type="email" id="email" placeholder="E-Mail" required>
+    <input type="password" id="password" placeholder="Passwort" required>
+    <button type="submit">Anmelden</button>
+  </form>
+  
   <div id="main-container" style="display: none;">
     <button id="logout-button">Logout</button>
     <input type="text" id="bonsai-input" placeholder="Neuer Bonsai">
