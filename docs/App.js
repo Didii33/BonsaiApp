@@ -6,11 +6,27 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 
 document.addEventListener('DOMContentLoaded', () => {
+  const loginContainer = document.getElementById('login-container');
+  const mainContainer = document.getElementById('main-container');
   const loginButton = document.getElementById('login-button');
   const logoutButton = document.getElementById('logout-button');
   const bonsaiList = document.getElementById('bonsai-list');
   const bonsaiInput = document.getElementById('bonsai-input');
   const addBonsaiButton = document.getElementById('add-bonsai-button');
+
+  // Authentifizierungsstatus überwachen
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      // Benutzer ist eingeloggt
+      loginContainer.style.display = 'none';
+      mainContainer.style.display = 'block';
+      loadBonsaiList();
+    } else {
+      // Benutzer ist nicht eingeloggt
+      loginContainer.style.display = 'block';
+      mainContainer.style.display = 'none';
+    }
+  });
 
   // Login-Funktion
   loginButton.addEventListener('click', () => {
@@ -53,14 +69,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Bonsai-Liste anzeigen
-  db.collection('bonsais').orderBy('timestamp').onSnapshot(snapshot => {
-    bonsaiList.innerHTML = '';
-    snapshot.forEach(doc => {
-      const bonsai = doc.data();
-      const listItem = document.createElement('li');
-      listItem.textContent = bonsai.name;
-      bonsaiList.appendChild(listItem);
+  // Bonsai-Liste laden
+  function loadBonsaiList() {
+    db.collection('bonsais').orderBy('timestamp').onSnapshot(snapshot => {
+      bonsaiList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const bonsai = doc.data();
+        const listItem = document.createElement('li');
+        listItem.textContent = bonsai.name;
+        bonsaiList.appendChild(listItem);
+      });
     });
-  });
+  }
 });
