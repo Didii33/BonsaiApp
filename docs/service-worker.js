@@ -1,31 +1,27 @@
-const CACHE_NAME = 'bonsai-cache-v1';
-const urlsToCache = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/app.js',
-  '/manifest.json',
-  '/icon-192x192.png',
-  '/icon-512x512.png'
-];
-
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
+self.addEventListener('install', (event) => {
+    event.waitUntil(
+      caches.open('bonsai-cache').then((cache) => {
+        return cache.addAll([
+          '/',
+          '/index.html',
+          '/style.css',
+          '/app.js',
+          '/firebaseConfig.js',
+          '/manifest.json',
+          '/favicon.ico',
+        ]);
       })
-  );
-});
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
+    );
+  });
+  
+  self.addEventListener('fetch', (event) => {
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
         }
         return fetch(event.request);
       })
-  );
-});
+    );
+  });
+  

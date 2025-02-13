@@ -1,9 +1,10 @@
 {
   "name": "Bonsai Pflege",
   "short_name": "Bonsai",
+  "description": "Erinnert dich an die Pflege deines Bonsais.",
   "background_color": "#ffffff",
-  "description": "Eine App zur Pflege deines Bonsais",
-    "icons": [
+  "theme_color": "#4CAF50",
+  "icons": [
       {
         "src": "icon1.png",
         "sizes": "512x512",

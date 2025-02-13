@@ -1,10 +1,4 @@
-// Initialisiere Firebase
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-} else {
-  firebase.app(); // Wenn Firebase schon initialisiert wurde, verwende diese Instanz.
-}
-
+// Firebase Dienste initialisieren
 const auth = firebase.auth();
 const db = firebase.firestore();
 
