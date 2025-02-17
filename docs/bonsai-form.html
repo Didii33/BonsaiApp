@@ -5,12 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bonsai eintragen</title>
   <link rel="stylesheet" href="style.css">
+  
+  <!-- Firebase-Skripte einbinden -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+  <!-- Deine Firebase-Konfiguration einbinden -->
+  <script src="firebaseConfig.js"></script>
 
   <script>
+    // Überprüfen, ob der Benutzer eingeloggt ist
     firebase.auth().onAuthStateChanged(user => {
-     if (!user) {
-      // Wenn der Benutzer nicht eingeloggt ist, zur Login-Seite weiterleiten
-     window.location.href = 'index.html';
+      if (!user) {
+        // Wenn der Benutzer nicht eingeloggt ist, zur Login-Seite weiterleiten
+        window.location.href = 'index.html';
       }
     });
   </script>
@@ -29,6 +38,7 @@
     <button type="submit">Bonsai speichern</button>
   </form>
 
+  <!-- Dein eigenes JavaScript-Skript -->
   <script src="app.js"></script>
 </body>
 </html>
