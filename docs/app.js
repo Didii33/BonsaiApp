@@ -18,20 +18,18 @@ function isValidEmail(email) {
     }
   
     // Firebase Anmeldung durchführen
-    firebase.auth().signInWithEmailAndPassword(email, password)
-     .then((userCredential) => {
-     // Erfolgreiches Login
-     console.log('Erfolgreich eingeloggt:', userCredential.user);
-    
-     // Weiterleitung zur Bonsai-Seite
-     window.location.href = '/docs/bonsai-form.html'; // Ändere dies zum Pfad deiner Seite
-     })
-    .catch((error) => {
-     // Fehlerbehandlung
-     const errorCode = error.code;
-     const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-     });
+    if (!email || !password) {
+      console.error("E-Mail oder Passwort ist leer!");
+      return;
+  }
+  
+  firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+          console.log("Login erfolgreich!", userCredential);
+      })
+      .catch((error) => {
+          console.error("Fehler beim Einloggen:", error.message);
+      });
   
   // Beispiel für die Registrierung
   function registerWithEmail(email, password) {
@@ -54,3 +52,10 @@ function isValidEmail(email) {
       });
   }
   
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/docs/service-worker.js')
+            .then(reg => console.log('Service Worker registriert:', reg.scope))
+            .catch(err => console.log('Service Worker Fehler:', err));
+    });
+}
