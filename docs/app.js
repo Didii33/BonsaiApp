@@ -31,9 +31,8 @@ document.getElementById('signInForm').addEventListener('submit', (event) => {
     const user = userCredential.user;
     console.log('User logged in:', user);
 
-    // Anzeige des Hauptcontainers und Ausblenden des Formulars
-    document.getElementById('signInForm').style.display = 'none';
-    document.getElementById('main-container').style.display = 'block';
+    // Weiterleitung zur bonsai-form.html
+    window.location.href = 'bonsai-form.html';  // Weiterleiten zur Bonsai-Form-Seite
   })
   .catch((error) => {
     console.error('Login error:', error);
