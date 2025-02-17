@@ -1,4 +1,5 @@
 // app.js
+console.log('App.js wurde geladen!');
 
 // Importiere Firebase-Module
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
