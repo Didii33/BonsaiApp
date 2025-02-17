@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bonsai eintragen</title>
   <link rel="stylesheet" href="style.css">
+
+  <script>
+    firebase.auth().onAuthStateChanged(user => {
+     if (!user) {
+      // Wenn der Benutzer nicht eingeloggt ist, zur Login-Seite weiterleiten
+     window.location.href = 'index.html';
+      }
+    });
+  </script>
+
 </head>
 <body>
   <h1>Bonsai hinzufügen</h1>

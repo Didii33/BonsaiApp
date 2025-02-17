@@ -15,29 +15,17 @@ function isValidEmail(email) {
     return regex.test(email);
 }
 
-// Beispiel für die Anmeldung
-function signInWithEmail(email, password) {
-  // Überprüfen, ob die E-Mail gültig ist
-  if (!isValidEmail(email)) {
-    console.error('Invalid email address');
-    alert('Bitte eine gültige E-Mail-Adresse eingeben!');
-    return;  // Verhindert den Login, wenn die E-Mail ungültig ist
-  }
+// Firebase Anmeldung durchführen
+firebase.auth().signInWithEmailAndPassword(email, password)
+   .then((userCredential) => {
+       console.log("Login erfolgreich!", userCredential);
+       // Weiterleitung auf die neue Seite
+       window.location.href = 'bonsai-form.html'; // oder `window.location.assign('bonsai-form.html');`
+   })
+   .catch((error) => {
+       console.error("Fehler beim Einloggen:", error.message);
+   });
 
-  // Weiter mit der Anmeldung, wenn die E-Mail gültig ist
-  if (!email || !password) {
-    console.error("E-Mail oder Passwort ist leer!");
-    return;
-  }
-
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-        console.log("Login erfolgreich!", userCredential);
-    })
-    .catch((error) => {
-        console.error("Fehler beim Einloggen:", error.message);
-    });
-}
 
 
 // Beispiel für die Registrierung
