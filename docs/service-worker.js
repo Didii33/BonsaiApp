@@ -78,3 +78,29 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
+self.addEventListener('fetch', event => {
+  const { request } = event;
+
+  // Überprüfen, ob es sich um eine GET-Anforderung handelt
+  if (request.method === 'GET') {
+    event.respondWith(
+      caches.match(request).then(response => {
+        return (
+          response ||
+          fetch(request).then(fetchResponse => {
+            return caches.open('my-cache').then(cache => {
+              // Nur GET-Anfragen werden gecacht
+              cache.put(request, fetchResponse.clone());
+              return fetchResponse;
+            });
+          })
+        );
+      })
+    );
+  } else {
+    // Wenn es eine POST-Anfrage ist, überspringen wir den Caching-Prozess
+    event.respondWith(fetch(request));
+  }
+});
+

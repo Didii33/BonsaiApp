@@ -23,19 +23,22 @@ document.getElementById('signInForm').addEventListener('submit', (event) => {
 
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
-  console.log('Email:', email);
-  console.log('Password:', password);
 
   // Firebase-Anmeldung hier einfügen
   const auth = getAuth();  // Hier holen wir den Auth-Objekt
-  signInWithEmailAndPassword(auth, email, password)  // Modularer Ansatz
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log('User logged in:', user);
-    })
-    .catch((error) => {
-      console.error('Login error:', error);
-    });
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    const user = userCredential.user;
+    console.log('User logged in:', user);
+
+    // Anzeige des Hauptcontainers und Ausblenden des Formulars
+    document.getElementById('signInForm').style.display = 'none';
+    document.getElementById('main-container').style.display = 'block';
+  })
+  .catch((error) => {
+    console.error('Login error:', error);
+    alert('Fehler beim Login: ' + error.message);
+  });
 });
 
 
