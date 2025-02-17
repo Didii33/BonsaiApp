@@ -1,4 +1,3 @@
-// Cache-Name und Ressourcen, die während der Installation gecached werden sollen
 const CACHE_NAME = 'bonsai-app-cache-v1';
 const urlsToCache = [
   '/', // Deine Startseite
@@ -23,7 +22,6 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('Caching wichtige Ressourcen');
-        // Versuche, alle URLs zu cachen und fange Fehler ab
         return cache.addAll(urlsToCache)
           .catch((err) => {
             console.error('Fehler beim Caching der Ressourcen:', err);
@@ -35,7 +33,6 @@ self.addEventListener('install', (event) => {
 // Aktivierung des Service Workers
 self.addEventListener('activate', (event) => {
   console.log('Service Worker aktiviert');
-  // Entferne alte Caches
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -53,54 +50,28 @@ self.addEventListener('activate', (event) => {
 
 // Fetch-Event für das Abrufen von Ressourcen
 self.addEventListener('fetch', (event) => {
-  const requestUrl = new URL(event.request.url);
-  
-  // Verhindere, dass URLs mit chrome-extension:// gecached werden
-  if (requestUrl.protocol === 'chrome-extension:') {
+  const { request } = event;
+
+  // Verhindere das Caching von POST-Anfragen
+  if (request.method === 'POST') {
+    event.respondWith(fetch(request));
     return;
   }
 
+  // Caching nur für GET-Anfragen
   event.respondWith(
-    // Zuerst im Netzwerk nach der Ressource suchen
-    fetch(event.request).then((response) => {
-      if (response.ok) {
-        // Klone die Antwort, um sie sowohl zu verwenden als auch zu cachen
-        const responseClone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          // Speichere die geklonte Antwort im Cache
-          cache.put(event.request, responseClone);
-        });
-      }
-      return response;
+    caches.match(request).then(response => {
+      return (
+        response ||
+        fetch(request).then(fetchResponse => {
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(request, fetchResponse.clone());
+            return fetchResponse;
+          });
+        })
+      );
     }).catch(() => {
-      // Wenn der Netzwerkzugriff fehlschlägt (z.B. bei Offline-Modus), wird die gecachte Antwort verwendet
-      return caches.match(event.request);
+      return caches.match(request);
     })
   );
 });
-
-self.addEventListener('fetch', event => {
-  const { request } = event;
-
-  // Überprüfen, ob es sich um eine GET-Anforderung handelt
-  if (request.method === 'GET') {
-    event.respondWith(
-      caches.match(request).then(response => {
-        return (
-          response ||
-          fetch(request).then(fetchResponse => {
-            return caches.open('my-cache').then(cache => {
-              // Nur GET-Anfragen werden gecacht
-              cache.put(request, fetchResponse.clone());
-              return fetchResponse;
-            });
-          })
-        );
-      })
-    );
-  } else {
-    // Wenn es eine POST-Anfrage ist, überspringen wir den Caching-Prozess
-    event.respondWith(fetch(request));
-  }
-});
-
