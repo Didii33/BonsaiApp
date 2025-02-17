@@ -1,5 +1,4 @@
-// service-worker.js
-
+// Cache-Name und Ressourcen, die während der Installation gecached werden sollen
 const CACHE_NAME = 'bonsai-app-cache-v1';
 const urlsToCache = [
   '/', // Deine Startseite
@@ -9,6 +8,9 @@ const urlsToCache = [
   '/firebaseConfig.js',
   '/app.js',
   '/service-worker.js',
+  'https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js',
+  'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js',
+  'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js'
 ];
 
 // Service Worker Installation
@@ -19,7 +21,11 @@ self.addEventListener('install', (event) => {
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('Caching wichtige Ressourcen');
-        return cache.addAll(urlsToCache);
+        // Versuche, alle URLs zu cachen und fange Fehler ab
+        return cache.addAll(urlsToCache)
+          .catch((err) => {
+            console.error('Fehler beim Caching der Ressourcen:', err);
+          });
       })
   );
 });
@@ -54,21 +60,16 @@ self.addEventListener('fetch', (event) => {
 
       // Andernfalls wird die Anfrage über das Netzwerk ausgeführt
       return fetch(event.request).then((response) => {
-        // Nur lokale Ressourcen speichern (nicht externe URLs)
-        if (event.request.url.startsWith(location.origin)) {
-          return caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, response.clone());
-            return response;
-          });
-        }
-
-        // Externe Ressourcen (z. B. Firebase-Skripte) nicht cachen
-        return response;
+        // Speichern der Antwort im Cache, falls sie erfolgreich ist
+        return caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, response.clone());
+          return response;
+        });
+      }).catch((error) => {
+        // Fehlerbehandlung, wenn sowohl das Netzwerk als auch der Cache nicht verfügbar sind
+        console.error('Fehler beim Abrufen der Ressource:', error);
+        throw error;
       });
-    }).catch((error) => {
-      // Fehlerbehandlung, wenn sowohl das Netzwerk als auch der Cache nicht verfügbar sind
-      console.error('Fehler beim Abrufen der Ressource:', error);
-      throw error;
     })
   );
 });
