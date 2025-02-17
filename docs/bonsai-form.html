@@ -6,18 +6,46 @@
   <title>Bonsai eintragen</title>
   <link rel="stylesheet" href="style.css">
 
-  <!-- Firebase und Firebase-Dienste als Module laden -->
-  <script type="module">
-    // Firebase Konfiguration importieren
-    import firebaseConfig from './firebaseConfig.js';
+  <!-- Firebase-Skripte einbinden -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
-    // Firebase-App-Initialisierung
-    import firebase from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
-    import 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
-    import 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
+  <script src="firebaseConfig.js"></script> <!-- Deine Firebase-Konfiguration -->
 
-    // Firebase initialisieren
+  <script>
+    // Firebase App initialisieren
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Authentifizierung überprüfen
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Event-Listener für das Bonsai-Formular
+    document.getElementById('bonsaiForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const bonsaiName = document.getElementById('bonsaiName').value;
+      const bonsaiAge = document.getElementById('bonsaiAge').value;
+
+      db.collection('bonsais').add({
+        name: bonsaiName,
+        age: bonsaiAge,
+        userId: firebase.auth().currentUser.uid
+      })
+      .then(() => {
+        console.log('Bonsai erfolgreich gespeichert!');
+        window.location.href = '/docs/bonsai-list.html';  // Weiterleitung zur Liste
+      })
+      .catch((error) => {
+        console.error('Fehler beim Speichern des Bonsais:', error);
+      });
+    });
   </script>
 
 </head>
@@ -34,7 +62,5 @@
     <button type="submit">Bonsai speichern</button>
   </form>
 
-  <!-- App.js als Modul einbinden -->
-  <script type="module" src="app.js"></script>
 </body>
 </html>
