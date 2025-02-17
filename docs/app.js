@@ -27,7 +27,8 @@ document.getElementById('signInForm').addEventListener('submit', (event) => {
   console.log('Password:', password);
 
   // Firebase-Anmeldung hier einfügen
-  firebase.auth().signInWithEmailAndPassword(email, password)
+  const auth = getAuth();  // Hier holen wir den Auth-Objekt
+  signInWithEmailAndPassword(auth, email, password)  // Modularer Ansatz
     .then((userCredential) => {
       const user = userCredential.user;
       console.log('User logged in:', user);
