@@ -42,16 +42,12 @@
   <script>
     // Service Worker Registrierung
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/docs/service-worker.js')  // Stelle sicher, dass der Pfad korrekt ist
-          .then(registration => {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-          })
-          .catch(err => {
-            console.log('ServiceWorker registration failed: ', err);
-          });
-      });
-    }
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/docs/service-worker.js')
+            .then(reg => console.log('Service Worker registriert:', reg.scope))
+            .catch(err => console.error('Service Worker Fehler:', err));
+    });
+}
   </script>
   <script src="service-worker-registration.js"></script>
 
