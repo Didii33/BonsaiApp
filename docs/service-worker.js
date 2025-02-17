@@ -61,12 +61,14 @@ self.addEventListener('fetch', (event) => {
   }
 
   event.respondWith(
-    // Zuerst im Netzwerk nach der Ressource suchen, wenn verfügbar, und dann in den Cache legen
+    // Zuerst im Netzwerk nach der Ressource suchen
     fetch(event.request).then((response) => {
       if (response.ok) {
-        // Die Antwort wird ins Cache gelegt, nachdem sie aus dem Netzwerk geladen wurde
+        // Klone die Antwort, um sie sowohl zu verwenden als auch zu cachen
+        const responseClone = response.clone();
         caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, response.clone());
+          // Speichere die geklonte Antwort im Cache
+          cache.put(event.request, responseClone);
         });
       }
       return response;
