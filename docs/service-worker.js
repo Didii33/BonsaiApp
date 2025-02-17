@@ -58,6 +58,12 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Verhindere das Caching von chrome-extension-URLs
+  const requestUrl = new URL(request.url);
+  if (requestUrl.protocol === 'chrome-extension:') {
+    return;
+  }
+
   // Caching nur für GET-Anfragen
   event.respondWith(
     caches.match(request).then(response => {
