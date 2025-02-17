@@ -1,3 +1,6 @@
+const email = document.getElementById("email").value.trim(); 
+const password = document.getElementById("password").value.trim(); 
+
 // Funktion zur Überprüfung des E-Mail-Formats
 function isValidEmail(email) {
     const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
