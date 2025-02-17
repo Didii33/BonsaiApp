@@ -30,10 +30,12 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Aktivierung des Service Workers
+// Aktivierung des Service Workers und Cache-Aktualisierung
 self.addEventListener('activate', (event) => {
   console.log('Service Worker aktiviert');
   const cacheWhitelist = [CACHE_NAME];
+  
+  // Alte Caches löschen, die nicht der aktuellen Version entsprechen
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
@@ -71,27 +73,13 @@ self.addEventListener('fetch', (event) => {
         response ||
         fetch(request).then(fetchResponse => {
           return caches.open(CACHE_NAME).then(cache => {
-            cache.put(request, fetchResponse.clone());
+            cache.put(request, fetchResponse.clone()); // Stelle sicher, dass die Antwort im Cache gespeichert wird
             return fetchResponse;
           });
         })
       );
     }).catch(() => {
-      return caches.match(request);
-    })
-  );
-});
-
-
-// Service Worker Cache leeren
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          return caches.delete(cacheName);
-        })
-      );
+      return caches.match(request); // Falls ein Fehler beim Abrufen auftritt, gibt es eine gecachte Version zurück
     })
   );
 });
