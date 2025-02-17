@@ -15,18 +15,24 @@ function isValidEmail(email) {
     return regex.test(email);
 }
 
-// Firebase Anmeldung durchführen
-firebase.auth().signInWithEmailAndPassword(email, password)
-   .then((userCredential) => {
-       console.log("Login erfolgreich!", userCredential);
-       // Weiterleitung auf die neue Seite
-       window.location.href = 'bonsai-form.html'; // oder `window.location.assign('bonsai-form.html');`
-   })
-   .catch((error) => {
-       console.error("Fehler beim Einloggen:", error.message);
-   });
+document.getElementById("loginBtn").addEventListener("click", function() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log('Erfolgreich angemeldet', user);
+      // Weiterleitung zur nächsten Seite (z. B. bonsai-form.html)
+      window.location.href = "bonsai-form.html";  // Hier die gewünschte Weiterleitung
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error('Fehler bei der Anmeldung:', errorCode, errorMessage);
+      alert('Fehler bei der Anmeldung: ' + errorMessage);
+    });
+});
 
 // Beispiel für die Registrierung
 function registerWithEmail(email, password) {
