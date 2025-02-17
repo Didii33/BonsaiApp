@@ -68,3 +68,32 @@ document.getElementById('bonsaiForm').addEventListener('submit', (event) => {
     console.error('Fehler beim Speichern des Bonsais:', error);
   });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Dein Code für das Formular
+  const bonsaiForm = document.getElementById('bonsaiForm');
+  if (bonsaiForm) {
+    bonsaiForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const bonsaiName = document.getElementById('bonsaiName').value;
+      const bonsaiAge = document.getElementById('bonsaiAge').value;
+
+      // Weitere Logik für das Speichern des Bonsais in Firestore
+      const db = firebase.firestore();
+      db.collection('bonsais').add({
+        name: bonsaiName,
+        age: bonsaiAge,
+        userId: firebase.auth().currentUser.uid
+      })
+      .then(() => {
+        console.log('Bonsai erfolgreich gespeichert!');
+        window.location.href = '/docs/bonsai-list.html'; // Weiterleitung zur Liste
+      })
+      .catch((error) => {
+        console.error('Fehler beim Speichern des Bonsais:', error);
+      });
+    });
+  } else {
+    console.error('Das Formular "bonsaiForm" wurde nicht gefunden!');
+  }
+});
