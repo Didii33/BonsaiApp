@@ -17,27 +17,28 @@ function isValidEmail(email) {
 
 // Beispiel für die Anmeldung
 function signInWithEmail(email, password) {
-    // Überprüfen, ob die E-Mail gültig ist
-    if (!isValidEmail(email)) {
-        console.error('Invalid email address');
-        alert('Bitte eine gültige E-Mail-Adresse eingeben!');
-        return;
-    }
+  // Überprüfen, ob die E-Mail gültig ist
+  if (!isValidEmail(email)) {
+    console.error('Invalid email address');
+    alert('Bitte eine gültige E-Mail-Adresse eingeben!');
+    return;  // Verhindert den Login, wenn die E-Mail ungültig ist
+  }
 
-    // Firebase Anmeldung durchführen
-    if (!email || !password) {
-        console.error("E-Mail oder Passwort ist leer!");
-        return;
-    }
+  // Weiter mit der Anmeldung, wenn die E-Mail gültig ist
+  if (!email || !password) {
+    console.error("E-Mail oder Passwort ist leer!");
+    return;
+  }
 
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            console.log("Login erfolgreich!", userCredential);
-        })
-        .catch((error) => {
-            console.error("Fehler beim Einloggen:", error.message);
-        });
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        console.log("Login erfolgreich!", userCredential);
+    })
+    .catch((error) => {
+        console.error("Fehler beim Einloggen:", error.message);
+    });
 }
+
 
 // Beispiel für die Registrierung
 function registerWithEmail(email, password) {
