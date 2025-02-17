@@ -16,17 +16,6 @@ function isValidEmail(email) {
     return regex.test(email);
 }
 
-// Firebase Authentifizierungsstatus überwachen
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    // Wenn der Benutzer eingeloggt ist, weiterleiten zur bonsai-form.html
-    window.location.href = 'bonsai-form.html';
-  } else {
-    // Wenn der Benutzer nicht eingeloggt ist, bleibe auf der Login-Seite
-    console.log('User not logged in');
-  }
-});
-
 
 //login mit firebase
 document.getElementById('signInForm').addEventListener('submit', (event) => {
