@@ -35,13 +35,12 @@
     <button id="add-bonsai-button">Hinzufügen</button>
     <ul id="bonsai-list"></ul>
   </div>
-
-  <script> console.log("test")</script>
   
 
   <!-- Service Worker Registrierung -->
   <script nonce="random123">
   if ('serviceWorker' in navigator) {
+    console.log("hallo");
     navigator.serviceWorker.register('./service-worker.js')
       .then(reg => console.log('Service Worker registriert!', reg))
       .catch(err => console.error('Service Worker Fehler:', err));
