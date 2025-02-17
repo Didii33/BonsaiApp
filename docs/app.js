@@ -16,6 +16,18 @@ function isValidEmail(email) {
     return regex.test(email);
 }
 
+// Firebase Authentifizierungsstatus überwachen
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    // Wenn der Benutzer eingeloggt ist, weiterleiten zur bonsai-form.html
+    window.location.href = 'bonsai-form.html';
+  } else {
+    // Wenn der Benutzer nicht eingeloggt ist, bleibe auf der Login-Seite
+    console.log('User not logged in');
+  }
+});
+
+
 //login mit firebase
 document.getElementById('signInForm').addEventListener('submit', (event) => {
   event.preventDefault(); // Verhindert, dass das Formular neu geladen wird.
@@ -41,27 +53,6 @@ document.getElementById('signInForm').addEventListener('submit', (event) => {
 });
 
 
-
-// Beispiel für die Registrierung
-function registerWithEmail(email, password) {
-    // Überprüfen, ob die E-Mail gültig ist
-    if (!isValidEmail(email)) {
-        console.error('Invalid email address');
-        alert('Bitte eine gültige E-Mail-Adresse eingeben!');
-        return;
-    }
-
-    // Firebase Registrierung durchführen
-    createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-            const user = userCredential.user;
-            console.log('User registered as:', user.email);
-        })
-        .catch(error => {
-            console.error('Error registering:', error);
-            alert('Fehler bei der Registrierung: ' + error.message);
-        });
-}
 
 // Service Worker registrieren, falls unterstützt
 if ('serviceWorker' in navigator) {
