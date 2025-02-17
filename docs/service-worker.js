@@ -54,29 +54,25 @@ self.addEventListener('activate', (event) => {
 // Fetch-Event für das Abrufen von Ressourcen
 self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
-
+  
   // Verhindere, dass URLs mit chrome-extension:// gecached werden
   if (requestUrl.protocol === 'chrome-extension:') {
     return;
   }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
+    // Zuerst im Netzwerk nach der Ressource suchen, wenn verfügbar, und dann in den Cache legen
+    fetch(event.request).then((response) => {
+      if (response.ok) {
+        // Die Antwort wird ins Cache gelegt, nachdem sie aus dem Netzwerk geladen wurde
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, response.clone());
+        });
       }
-
-      return fetch(event.request).then((response) => {
-        if (response.ok && (requestUrl.protocol === 'http:' || requestUrl.protocol === 'https:')) {
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, response.clone());
-          });
-        }
-        return response;
-      });
-    }).catch((error) => {
-      console.error('Fehler beim Abrufen der Ressource:', error);
-      throw error;
+      return response;
+    }).catch(() => {
+      // Wenn der Netzwerkzugriff fehlschlägt (z.B. bei Offline-Modus), wird die gecachte Antwort verwendet
+      return caches.match(event.request);
     })
   );
 });
