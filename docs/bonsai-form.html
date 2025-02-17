@@ -8,7 +8,10 @@
 
   <!-- Firebase und Firebase-Dienste laden -->
   <script type="module">
+    // Firebase Konfiguration importieren
     import firebaseConfig from './firebaseConfig.js';
+
+    // Firebase Module importieren
     import firebase from 'https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js';
     import 'https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js';
     import 'https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js';
@@ -31,6 +34,7 @@
     <button type="submit">Bonsai speichern</button>
   </form>
 
+  <!-- App.js als Modul einbinden -->
   <script type="module" src="app.js"></script>
 </body>
 </html>

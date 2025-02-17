@@ -54,27 +54,19 @@ if ('serviceWorker' in navigator) {
 
 //Bonsai-form
 // Event-Listener für das Bonsai-Formular
+
 document.getElementById('bonsaiForm').addEventListener('submit', (event) => {
   event.preventDefault();
 
   const bonsaiName = document.getElementById('bonsaiName').value;
   const bonsaiAge = document.getElementById('bonsaiAge').value;
-  
-  // Überprüfen, ob der Benutzer eingeloggt ist
-  const user = firebase.auth().currentUser;
-  if (!user) {
-    console.error('Benutzer nicht eingeloggt!');
-    return;
-  }
 
-  // Firebase Firestore-Referenz
+  // Angenommen, du verwendest Firebase Firestore
   const db = firebase.firestore();
-  
-  // Bonsai-Daten in die Firestore-Datenbank speichern
   db.collection('bonsais').add({
     name: bonsaiName,
     age: bonsaiAge,
-    userId: user.uid // Speichern der User-ID für die Zuordnung
+    userId: firebase.auth().currentUser.uid // Speichern der User-ID für die Zuordnung
   })
   .then(() => {
     console.log('Bonsai erfolgreich gespeichert!');
