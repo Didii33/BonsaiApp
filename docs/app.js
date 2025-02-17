@@ -21,7 +21,7 @@ function isValidEmail(email) {
     if (!email || !password) {
       console.error("E-Mail oder Passwort ist leer!");
       return;
-  }
+     }
   
   firebase.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -53,9 +53,8 @@ function isValidEmail(email) {
   }
   
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/docs/service-worker.js')
-            .then(reg => console.log('Service Worker registriert:', reg.scope))
-            .catch(err => console.log('Service Worker Fehler:', err));
-    });
-}
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('Service Worker registriert!', reg))
+      .catch(err => console.error('Service Worker Fehler:', err));
+  }
+  

@@ -3,26 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://www.gstatic.com https://www.googleapis.com https://apis.google.com;">
-
-
-
-
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'nonce-random123' https://www.gstatic.com https://www.googleapis.com https://apis.google.com;">
 
   <title>Bonsai Pflege</title>
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
 
   <!-- Firebase SDKs -->
+  <script src="firebaseConfig.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
 </head>
 <body>
   <h1>Bonsai Pflege</h1>
+
   <!-- Formular für die Anmeldung -->
-<form id="signInForm">
+  <form id="signInForm">
     <input type="email" id="email" placeholder="E-Mail" required>
     <input type="password" id="password" placeholder="Passwort" required>
     <button type="submit">Anmelden</button>
@@ -34,24 +31,16 @@
     <button id="add-bonsai-button">Hinzufügen</button>
     <ul id="bonsai-list"></ul>
   </div>
-  <script src="firebaseConfig.js"></script>
+
   <script src="app.js"></script>
 
-  <script src="service-worker.js"></script>
-
-  <script>
-    // Service Worker Registrierung
-    if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/docs/service-worker.js')
-            .then(reg => console.log('Service Worker registriert:', reg.scope))
-            .catch(err => console.error('Service Worker Fehler:', err));
-    });
-}
+  <!-- Service Worker Registrierung -->
+  <script nonce="random123">
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('Service Worker registriert!', reg))
+      .catch(err => console.error('Service Worker Fehler:', err));
+  }
   </script>
-
-
-  
-
 </body>
 </html>
