@@ -1,3 +1,5 @@
+// firebaseConfig.js
+
 const firebaseConfig = {
   apiKey: "AIzaSyD8AQIlrh-wK1ken2YNPPupycc47-UJPig",
   authDomain: "bonsaiapp-cfe83.firebaseapp.com",
@@ -7,5 +9,4 @@ const firebaseConfig = {
   appId: "1:596359983425:web:c4fc04b1e33ab7f2e6f1c0"
 };
 
-firebase.initializeApp(firebaseConfig);
-
+export default firebaseConfig;
