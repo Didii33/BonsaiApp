@@ -1,14 +1,15 @@
-// app.js
 console.log('App.js wurde geladen!');
 
 // Importiere Firebase-Module
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"; // Import für Firestore
 import firebaseConfig from './firebaseConfig.js';  // Firebase-Konfiguration importieren
 
 // Firebase App initialisieren
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app); // Firestore initialisieren
 
 // Funktion zur Überprüfung des E-Mail-Formats
 function isValidEmail(email) {
@@ -16,8 +17,7 @@ function isValidEmail(email) {
     return regex.test(email);
 }
 
-
-//login mit firebase
+// Login mit Firebase
 document.getElementById('signInForm').addEventListener('submit', (event) => {
   event.preventDefault(); // Verhindert, dass das Formular neu geladen wird.
   console.log('Login Form submitted');
@@ -25,8 +25,6 @@ document.getElementById('signInForm').addEventListener('submit', (event) => {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
-  // Firebase-Anmeldung hier einfügen
-  const auth = getAuth();  // Hier holen wir den Auth-Objekt
   signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     const user = userCredential.user;
@@ -41,8 +39,6 @@ document.getElementById('signInForm').addEventListener('submit', (event) => {
   });
 });
 
-
-
 // Service Worker registrieren, falls unterstützt
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js')
@@ -50,23 +46,18 @@ if ('serviceWorker' in navigator) {
         .catch(err => console.error('Service Worker Fehler:', err));
 }
 
-
-
-//Bonsai-form
-// Event-Listener für das Bonsai-Formular
-
+// Bonsai-Form: Event-Listener für das Bonsai-Formular
 document.getElementById('bonsaiForm').addEventListener('submit', (event) => {
   event.preventDefault();
 
   const bonsaiName = document.getElementById('bonsaiName').value;
   const bonsaiAge = document.getElementById('bonsaiAge').value;
 
-  // Angenommen, du verwendest Firebase Firestore
-  const db = firebase.firestore();
-  db.collection('bonsais').add({
+  // Angenommen, du verwendest Firebase Firestore mit der Modular-API
+  addDoc(collection(db, 'bonsais'), {
     name: bonsaiName,
     age: bonsaiAge,
-    userId: firebase.auth().currentUser.uid // Speichern der User-ID für die Zuordnung
+    userId: auth.currentUser.uid // Speichern der User-ID für die Zuordnung
   })
   .then(() => {
     console.log('Bonsai erfolgreich gespeichert!');
